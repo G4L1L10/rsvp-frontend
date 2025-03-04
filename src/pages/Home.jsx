@@ -1,14 +1,25 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import styled from "styled-components";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
     <Container>
-      <h1>Welcome to Auth Frontend</h1>
-      <p>Click below to log in and access the dashboard.</p>
-      <Button onClick={() => navigate("/login")}>Login</Button>
+      <h1>Welcome to Our App</h1>
+      <p>
+        {user
+          ? `You're logged in as ${user.email}`
+          : "Please log in to access your dashboard."}
+      </p>
+
+      {!user && <Button onClick={() => navigate("/login")}>Login</Button>}
+      {user && (
+        <Button onClick={() => navigate("/dashboard")}>Go to Dashboard</Button>
+      )}
     </Container>
   );
 };
@@ -40,4 +51,3 @@ const Button = styled.button`
     background-color: #2980b9;
   }
 `;
-``;

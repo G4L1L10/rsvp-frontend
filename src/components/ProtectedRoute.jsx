@@ -3,13 +3,11 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
 
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
+  if (loading) return <p>Loading...</p>; // Prevents flicker
 
-  return children;
+  return user ? children : <Navigate to="/" />; // Redirects to home instead of login
 };
 
 export default ProtectedRoute;
