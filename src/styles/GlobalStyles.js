@@ -25,6 +25,19 @@ const GlobalStyles = createGlobalStyle`
   input, button {
     font-size: 16px;
   }
+
+  /* ✅ Mobile-friendly text sizes */
+  @media (max-width: 768px) {
+    body {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body {
+      font-size: 12px;
+    }
+  }
 `;
 
 export default GlobalStyles;

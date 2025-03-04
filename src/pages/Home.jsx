@@ -16,10 +16,14 @@ const Home = () => {
           : "Please log in to access your dashboard."}
       </p>
 
-      {!user && <Button onClick={() => navigate("/login")}>Login</Button>}
-      {user && (
-        <Button onClick={() => navigate("/dashboard")}>Go to Dashboard</Button>
-      )}
+      <ButtonContainer>
+        {!user && <Button onClick={() => navigate("/login")}>Login</Button>}
+        {user && (
+          <Button onClick={() => navigate("/dashboard")}>
+            Go to Dashboard
+          </Button>
+        )}
+      </ButtonContainer>
     </Container>
   );
 };
@@ -34,20 +38,37 @@ const Container = styled.div`
   justify-content: center;
   height: 100vh;
   text-align: center;
+  padding: 20px;
+`;
+
+// ✅ Responsive Buttons
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Button = styled.button`
   background-color: #3498db;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 20px;
+  font-size: 18px;
   cursor: pointer;
-  margin-top: 20px;
   border-radius: 5px;
   transition: 0.3s;
+  width: 100%;
 
   &:hover {
     background-color: #2980b9;
+  }
+
+  @media (min-width: 768px) {
+    width: auto;
   }
 `;

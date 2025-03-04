@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { getGuests } from "../api/rsvp"; // Import API helper
+import { getGuests } from "../api/rsvp";
 import styled from "styled-components";
 
 const Dashboard = () => {
@@ -35,34 +35,37 @@ const Dashboard = () => {
       {loading && <p>Loading guests...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <Table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Family Side</th>
-            <th>Hongbao</th>
-            <th>Total Guests</th>
-            <th>RSVP Status</th>
-            <th>RSVP Token</th>
-          </tr>
-        </thead>
-        <tbody>
-          {guests.map((guest) => (
-            <tr key={guest.id}>
-              <td>{guest.id}</td>
-              <td>{guest.name}</td>
-              <td>{guest.email}</td>
-              <td>{guest.family_side}</td>
-              <td>${guest.hongbao}</td>
-              <td>{guest.total_guests}</td>
-              <td>{guest.rsvp_status ? "Attending" : "Not Attending"}</td>
-              <td>{guest.rsvp_token}</td>
+      {/* Make Table Scrollable on Small Screens */}
+      <TableWrapper>
+        <Table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Family Side</th>
+              <th>Hongbao</th>
+              <th>Total Guests</th>
+              <th>RSVP Status</th>
+              <th>RSVP Token</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {guests.map((guest) => (
+              <tr key={guest.id}>
+                <td>{guest.id}</td>
+                <td>{guest.name}</td>
+                <td>{guest.email}</td>
+                <td>{guest.family_side}</td>
+                <td>${guest.hongbao}</td>
+                <td>{guest.total_guests}</td>
+                <td>{guest.rsvp_status ? "Attending" : "Not Attending"}</td>
+                <td>{guest.rsvp_token}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </TableWrapper>
     </Container>
   );
 };
@@ -90,9 +93,14 @@ const Button = styled.button`
   }
 `;
 
+// ✅ Make Table Responsive with Scroll
+const TableWrapper = styled.div`
+  overflow-x: auto; /* Enables horizontal scrolling on small screens */
+  max-width: 100%;
+`;
+
 const Table = styled.table`
   width: 100%;
-  margin-top: 20px;
   border-collapse: collapse;
 
   th,
@@ -100,9 +108,27 @@ const Table = styled.table`
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
+    font-size: 16px;
   }
 
   th {
     background-color: #f4f4f4;
+  }
+
+  /* Responsive Table */
+  @media (max-width: 768px) {
+    th,
+    td {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    th,
+    td {
+      font-size: 12px;
+      padding: 6px;
+    }
   }
 `;
