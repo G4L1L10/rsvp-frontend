@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getGuests } from "../api/rsvp";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Dashboard = () => {
@@ -25,10 +26,16 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <h1>Dashboard</h1>
-      <p>Welcome, {user?.email}!</p>
+      <Header>
+        <h1>Dashboard</h1>
+        <p>Welcome, {user?.email}!</p>
+        <Button onClick={logout}>Logout</Button>
+      </Header>
 
-      <Button onClick={logout}>Logout</Button>
+      {/* Invite Guest Button */}
+      <ButtonContainer>
+        <InviteButton to="/invite-guest">Invite a Guest</InviteButton>
+      </ButtonContainer>
 
       <h2>Guest List</h2>
 
@@ -76,6 +83,30 @@ export default Dashboard;
 const Container = styled.div`
   text-align: center;
   padding: 20px;
+`;
+
+const Header = styled.div`
+  margin-bottom: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  margin: 20px 0;
+`;
+
+const InviteButton = styled(Link)`
+  display: inline-block;
+  background-color: #3498db;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #2980b9;
+  }
 `;
 
 const Button = styled.button`
