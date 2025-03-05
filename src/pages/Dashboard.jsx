@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
-  const [guests, setGuests] = useState([]);
+  const [guests, setGuests] = useState([]); // ✅ Default to empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,7 +14,9 @@ const Dashboard = () => {
     const fetchGuests = async () => {
       try {
         const guestData = await getGuests();
-        setGuests(guestData);
+
+        // ✅ Handle case where API returns null/undefined
+        setGuests(guestData || []);
       } catch (err) {
         setError("Failed to fetch guests.");
       }
@@ -42,37 +44,44 @@ const Dashboard = () => {
       {loading && <p>Loading guests...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
+      {/* ✅ Display message if no guests exist */}
+      {guests.length === 0 && !loading && (
+        <p>No guests found. Invite a guest to get started!</p>
+      )}
+
       {/* Make Table Scrollable on Small Screens */}
-      <TableWrapper>
-        <Table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Family Side</th>
-              <th>Hongbao</th>
-              <th>Total Guests</th>
-              <th>RSVP Status</th>
-              <th>RSVP Token</th>
-            </tr>
-          </thead>
-          <tbody>
-            {guests.map((guest) => (
-              <tr key={guest.id}>
-                <td>{guest.id}</td>
-                <td>{guest.name}</td>
-                <td>{guest.email}</td>
-                <td>{guest.family_side}</td>
-                <td>${guest.hongbao}</td>
-                <td>{guest.total_guests}</td>
-                <td>{guest.rsvp_status ? "Attending" : "Not Attending"}</td>
-                <td>{guest.rsvp_token}</td>
+      {guests.length > 0 && (
+        <TableWrapper>
+          <Table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Family Side</th>
+                <th>Hongbao</th>
+                <th>Total Guests</th>
+                <th>RSVP Status</th>
+                <th>RSVP Token</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </TableWrapper>
+            </thead>
+            <tbody>
+              {guests.map((guest) => (
+                <tr key={guest.id}>
+                  <td>{guest.id}</td>
+                  <td>{guest.name}</td>
+                  <td>{guest.email}</td>
+                  <td>{guest.family_side}</td>
+                  <td>${guest.hongbao}</td>
+                  <td>{guest.total_guests}</td>
+                  <td>{guest.rsvp_status ? "Attending" : "Not Attending"}</td>
+                  <td>{guest.rsvp_token}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </TableWrapper>
+      )}
     </Container>
   );
 };

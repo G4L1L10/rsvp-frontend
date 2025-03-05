@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { sendInvite } from "../api/rsvp";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const InviteGuest = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [familySide, setFamilySide] = useState(""); // "Axel" or "Daphne"
-  const [totalGuests, setTotalGuests] = useState(1); // Default to 1
+  const [familySide, setFamilySide] = useState("");
+  const [totalGuests, setTotalGuests] = useState(1);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -44,27 +45,22 @@ const InviteGuest = () => {
     <Container>
       <h1>Invite a Guest</h1>
       <Form onSubmit={handleInvite}>
-        {/* Full Name Input */}
         <Label>Guest Name:</Label>
         <Input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          placeholder="Enter full name"
         />
 
-        {/* Email Input */}
         <Label>Guest Email:</Label>
         <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          placeholder="Enter guest's email"
         />
 
-        {/* Family Side (Radio Buttons) */}
         <Label>Family Side:</Label>
         <RadioContainer>
           <RadioLabel>
@@ -76,7 +72,6 @@ const InviteGuest = () => {
             />
             Axel's Side
           </RadioLabel>
-
           <RadioLabel>
             <input
               type="radio"
@@ -88,7 +83,6 @@ const InviteGuest = () => {
           </RadioLabel>
         </RadioContainer>
 
-        {/* Total Guests (Dropdown) */}
         <Label>Total Number of Guests:</Label>
         <Select
           value={totalGuests}
@@ -106,6 +100,9 @@ const InviteGuest = () => {
         </Button>
       </Form>
       {message && <Message>{message}</Message>}
+
+      {/* ✅ Back to Dashboard Button */}
+      <BackButton to="/dashboard">← Back to Dashboard</BackButton>
     </Container>
   );
 };
@@ -185,4 +182,21 @@ const Message = styled.p`
   margin-top: 10px;
   font-size: 14px;
   color: #2c3e50;
+`;
+
+const BackButton = styled(Link)`
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: 0.3s;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #2980b9;
+  }
 `;
