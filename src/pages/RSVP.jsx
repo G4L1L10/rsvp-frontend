@@ -10,14 +10,12 @@ const RSVP = () => {
   const [rsvpStatus, setRsvpStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [totalGuests, setTotalGuests] = useState(1);
 
   useEffect(() => {
     const fetchGuest = async () => {
       try {
         const guestData = await getGuestByToken(token);
         setGuest(guestData);
-        setTotalGuests(guestData.total_guests);
       } catch (err) {
         setError("Invalid RSVP token or guest not found.");
       }
@@ -34,7 +32,7 @@ const RSVP = () => {
     }
 
     try {
-      const response = await submitRSVP(token, rsvpStatus, totalGuests);
+      const response = await submitRSVP(token, rsvpStatus, guest.total_guests);
 
       if (response && response.message === "RSVP updated successfully") {
         alert("RSVP submitted successfully!");
@@ -61,13 +59,8 @@ const RSVP = () => {
       <p>Email: {guest.email}</p>
       <p>Family Side: {guest.family_side}</p>
 
-      <Label>Total Guests:</Label>
-      <GuestInput
-        type="number"
-        min="1"
-        value={totalGuests}
-        onChange={(e) => setTotalGuests(parseInt(e.target.value))}
-      />
+      {/* ✅ Display total guests instead of allowing input */}
+      <Label>Total Guests: {guest.total_guests}</Label>
 
       <Label>Are you attending?</Label>
       <ButtonGroup>
@@ -102,13 +95,6 @@ const Label = styled.p`
   font-size: 18px;
   font-weight: bold;
   margin-top: 10px;
-`;
-
-const GuestInput = styled.input`
-  width: 50px;
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 10px;
 `;
 
 const ButtonGroup = styled.div`
