@@ -1,26 +1,38 @@
 import axios from "axios";
+import { refreshToken } from "./auth"; // Import refresh function
 
 const RSVP_API_URL = "http://localhost:8081"; // Ensure no trailing slash
 
 export const getGuests = async () => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No authentication token found. Please login.");
-  }
-
   try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found. Please login.");
+    }
+
     const response = await axios.get(`${RSVP_API_URL}/admin/guests`, {
-      // No trailing slash
       headers: {
-        Authorization: `Bearer ${token}`, // Attach JWT token
+        Authorization: `Bearer ${token}`,
       },
     });
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching guests:", error);
-    throw error;
+    if (error.response && error.response.status === 401) {
+      console.warn("🔄 Token expired. Attempting refresh...");
+
+      try {
+        await refreshToken(); // Refresh token if expired
+        return getGuests(); // Retry fetching guests
+      } catch (refreshError) {
+        console.error("❌ Token refresh failed:", refreshError);
+        throw new Error("Session expired. Please log in again.");
+      }
+    } else {
+      console.error("Error fetching guests:", error);
+      throw error;
+    }
   }
 };
 
@@ -30,15 +42,15 @@ export const sendInvite = async ({
   family_side,
   total_guests,
 }) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No authentication token found. Please login.");
-  }
-
   try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found. Please login.");
+    }
+
     const response = await axios.post(
-      "http://localhost:8081/admin/invite",
+      `${RSVP_API_URL}/admin/invite`,
       { name, email, family_side, total_guests },
       {
         headers: {

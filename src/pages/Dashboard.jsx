@@ -1,30 +1,34 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getGuests } from "../api/rsvp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
-  const [guests, setGuests] = useState([]); // ✅ Default to empty array
+  const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGuests = async () => {
       try {
         const guestData = await getGuests();
-
-        // ✅ Handle case where API returns null/undefined
         setGuests(guestData || []);
       } catch (err) {
-        setError("Failed to fetch guests.");
+        setError(err.message);
+
+        if (err.message.includes("Session expired")) {
+          logout(); // Log user out if refresh fails
+          navigate("/login");
+        }
       }
       setLoading(false);
     };
 
     fetchGuests();
-  }, []);
+  }, [logout, navigate]);
 
   return (
     <Container>
@@ -34,7 +38,6 @@ const Dashboard = () => {
         <Button onClick={logout}>Logout</Button>
       </Header>
 
-      {/* Invite Guest Button */}
       <ButtonContainer>
         <InviteButton to="/invite-guest">Invite a Guest</InviteButton>
       </ButtonContainer>
@@ -44,12 +47,10 @@ const Dashboard = () => {
       {loading && <p>Loading guests...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {/* ✅ Display message if no guests exist */}
       {guests.length === 0 && !loading && (
         <p>No guests found. Invite a guest to get started!</p>
       )}
 
-      {/* Make Table Scrollable on Small Screens */}
       {guests.length > 0 && (
         <TableWrapper>
           <Table>
@@ -133,9 +134,8 @@ const Button = styled.button`
   }
 `;
 
-// ✅ Make Table Responsive with Scroll
 const TableWrapper = styled.div`
-  overflow-x: auto; /* Enables horizontal scrolling on small screens */
+  overflow-x: auto;
   max-width: 100%;
 `;
 
@@ -155,7 +155,6 @@ const Table = styled.table`
     background-color: #f4f4f4;
   }
 
-  /* Responsive Table */
   @media (max-width: 768px) {
     th,
     td {

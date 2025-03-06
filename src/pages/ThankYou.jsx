@@ -40,7 +40,7 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
-  max-width: 50%;
+  max-width: 35%;
   height: auto;
   border-radius: 10px;
 
