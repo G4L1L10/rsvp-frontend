@@ -1,11 +1,19 @@
 import { createGlobalStyle } from "styled-components";
+import WinkleFont from "../assets/fonts/Winkle-Regular.ttf"; // ✅ Import Winkle font
 
 const GlobalStyles = createGlobalStyle`
+  @font-face {
+    font-family: 'Winkle';
+    src: url(${WinkleFont}) format('truetype'); /* ✅ Use TrueType format */
+    font-weight: normal;
+    font-style: normal;
+  }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Winkle', sans-serif; /* ✅ Apply Winkle globally */
   }
 
   body {

@@ -3,7 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import InviteGuest from "./pages/InviteGuest";
-import RSVP from "./pages/RSVP"; // ✅ Import RSVP Page
+import RSVP from "./pages/RSVP"; // ✅ RSVP Page
+import ThankYou from "./pages/ThankYou"; // ✅ Thank You Page
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const RoutesComponent = () => {
@@ -11,8 +12,9 @@ const RoutesComponent = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/rsvp/:token" element={<RSVP />} />{" "}
-      {/* ✅ Added RSVP Route */}
+      <Route path="/rsvp/:token" element={<RSVP />} /> {/* ✅ RSVP Route */}
+      <Route path="/thank-you" element={<ThankYou />} />{" "}
+      {/* ✅ Thank You Route */}
       <Route
         path="/invite-guest"
         element={

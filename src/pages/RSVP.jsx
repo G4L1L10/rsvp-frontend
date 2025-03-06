@@ -4,7 +4,7 @@ import { getGuestByToken, submitRSVP } from "../api/rsvp";
 import styled from "styled-components";
 
 const RSVP = () => {
-  const { token } = useParams(); // ✅ Extract token correctly from URL path
+  const { token } = useParams();
   const navigate = useNavigate();
   const [guest, setGuest] = useState(null);
   const [rsvpStatus, setRsvpStatus] = useState("");
@@ -36,7 +36,7 @@ const RSVP = () => {
     try {
       await submitRSVP(token, rsvpStatus, totalGuests);
       alert("RSVP submitted successfully!");
-      navigate("/thank-you");
+      navigate(`/thank-you?rsvp=${rsvpStatus.toLowerCase()}`); // ✅ Pass RSVP status to Thank You Page
     } catch (err) {
       alert("Failed to submit RSVP. Please try again.");
     }
