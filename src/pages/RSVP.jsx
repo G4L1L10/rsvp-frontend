@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getGuestByToken, submitRSVP } from "../api/rsvp";
 import styled from "styled-components";
+import weddingInvite from "../assets/Wedding_invite.jpg"; // ✅ Import wedding invite image
 
 const RSVP = () => {
   const { token } = useParams();
@@ -55,26 +56,30 @@ const RSVP = () => {
 
   return (
     <Container>
-      <h1>RSVP for {guest.name}</h1>
-      <p>Email: {guest.email}</p>
-      <p>Family Side: {guest.family_side}</p>
+      {/* Wedding Invite Image */}
+      <InviteImage src={weddingInvite} alt="Wedding Invitation" />
 
-      {/* ✅ Display total guests instead of allowing input */}
-      <Label>Total Guests: {guest.total_guests}</Label>
+      {/* Guest Details */}
+      <Heading>RSVP for {guest.name}</Heading>
+      <Paragraph>Email: {guest.email}</Paragraph>
+      <Paragraph>Family Side: {guest.family_side}</Paragraph>
+      <Paragraph>Total Guests: {guest.total_guests}</Paragraph>
 
-      <Label>Are you attending?</Label>
+      {/* RSVP Buttons */}
       <ButtonGroup>
         <Button
+          isAttending
           active={rsvpStatus === "Attending"}
           onClick={() => setRsvpStatus("Attending")}
         >
-          ✅ Attending
+          ATENDING
         </Button>
         <Button
+          isAttending={false}
           active={rsvpStatus === "Not Attending"}
           onClick={() => setRsvpStatus("Not Attending")}
         >
-          ❌ Not Attending
+          NOT ATTENDING
         </Button>
       </ButtonGroup>
 
@@ -86,50 +91,117 @@ const RSVP = () => {
 export default RSVP;
 
 // Styled Components
+const Heading = styled.h1`
+  font-size: 52px;
+  font-weight: bold;
+  margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 48px; /* Adjust for tablets */
+  }
+
+  @media (max-width: 480px) {
+    font-size: 32px; /* Adjust for mobile */
+  }
+`;
+
+const Paragraph = styled.p`
+  font-size: 32px;
+  margin: 2px 0;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
+`;
+
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 20px;
 `;
 
-const Label = styled.p`
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 10px;
+const InviteImage = styled.img`
+  max-width: 40%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-top: 10px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    gap: 5px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+  }
 `;
 
 const Button = styled.button`
-  padding: 12px 24px;
-  font-size: 16px;
+  width: 200px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
   border-radius: 5px;
   border: none;
-  background-color: ${(props) => (props.active ? "#3498db" : "#ddd")};
-  color: ${(props) => (props.active ? "white" : "black")};
+  text-align: center;
   transition: 0.3s;
 
+  /* ✅ Default State: Light Gray */
+  background-color: ${(props) => (props.active ? (props.isAttending ? "#46d2c7" : "#464ff1") : "#ddd")};
+  color: ${(props) => (props.active ? "white" : "black")};
+
   &:hover {
-    background-color: ${(props) => (props.active ? "#2980b9" : "#bbb")};
+    /* ✅ Darker Shade on Hover */
+    background-color: ${(props) => (props.isAttending ? "#3cb5af" : "#3a44d1")};
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    width: 48%;
+    font-size: 16px;
+    padding: 12px;
   }
 `;
 
 const SubmitButton = styled.button`
-  background-color: #2ecc71;
-  color: white;
+  width: 200px;
+  background-color: ${(props) => (props.active ? "#d64df3" : "#ddd")}; /* ✅ Purple when active */
+  color: ${(props) => (props.active ? "white" : "black")};
   border: none;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
   margin-top: 20px;
   border-radius: 5px;
+  transition: 0.3s;
 
   &:hover {
-    background-color: #27ae60;
+    background-color: ${(props) => (props.active ? "#b93ecb" : "#bbb")}; /* ✅ Darker Purple on Hover */
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    padding: 12px 24px;
   }
 `;
+
