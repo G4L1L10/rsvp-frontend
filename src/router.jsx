@@ -3,18 +3,16 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import InviteGuest from "./pages/InviteGuest";
-import RSVP from "./pages/RSVP"; // ✅ RSVP Page
-import ThankYou from "./pages/ThankYou"; // ✅ Thank You Page
+import RSVP from "./pages/RSVP";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const RoutesComponent = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/rsvp/:token" element={<RSVP />} /> {/* ✅ RSVP Route */}
-      <Route path="/thank-you" element={<ThankYou />} />{" "}
-      {/* ✅ Thank You Route */}
+      <Route path="/jarvisismycopilot" element={<Login />} />{" "}
+      {/* ✅ Only accessible via URL */}
+      <Route path="/rsvp/:token" element={<RSVP />} />
       <Route
         path="/invite-guest"
         element={
