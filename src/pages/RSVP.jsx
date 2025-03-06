@@ -34,11 +34,21 @@ const RSVP = () => {
     }
 
     try {
-      await submitRSVP(token, rsvpStatus, totalGuests);
-      alert("RSVP submitted successfully!");
-      navigate(`/thank-you?rsvp=${rsvpStatus.toLowerCase()}`); // ✅ Pass RSVP status to Thank You Page
+      const response = await submitRSVP(token, rsvpStatus, totalGuests);
+
+      if (response && response.message === "RSVP updated successfully") {
+        alert("RSVP submitted successfully!");
+
+        // ✅ Redirect to /thank-you with correct image based on RSVP status
+        const imageType =
+          rsvpStatus === "Attending" ? "attending" : "not_attending";
+        navigate(`/thank-you?status=${imageType}`);
+      } else {
+        alert("Unexpected response. Please try again.");
+      }
     } catch (err) {
       alert("Failed to submit RSVP. Please try again.");
+      console.error("RSVP submission error:", err);
     }
   };
 
