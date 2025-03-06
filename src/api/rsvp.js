@@ -54,3 +54,19 @@ export const sendInvite = async ({
     throw error;
   }
 };
+
+// Fetch guest by RSVP token
+export const getGuestByToken = async (token) => {
+  const response = await axios.get(`${RSVP_API_URL}/rsvp/${token}`);
+  return response.data;
+};
+
+// Submit RSVP response
+export const submitRSVP = async (token, status, totalGuests) => {
+  const response = await axios.post(`${RSVP_API_URL}/rsvp/`, {
+    rsvp_token: token,
+    rsvp_status: status,
+    total_guests: totalGuests,
+  });
+  return response.data;
+};
