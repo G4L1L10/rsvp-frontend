@@ -50,7 +50,7 @@ const Image = styled.img`
 `;
 
 const BackButton = styled.button`
-  background-color: #3498db;
+  background-color: #d64df3; /* Purple */
   color: white;
   border: none;
   padding: 14px 28px;

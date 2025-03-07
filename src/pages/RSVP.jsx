@@ -68,22 +68,24 @@ const RSVP = () => {
       {/* RSVP Buttons */}
       <ButtonGroup>
         <Button
-          isAttending
-          active={rsvpStatus === "Attending"}
+          $isAttending={true}
+          $active={rsvpStatus === "Attending"}
           onClick={() => setRsvpStatus("Attending")}
         >
-          ATENDING
+          ATTENDING
         </Button>
         <Button
-          isAttending={false}
-          active={rsvpStatus === "Not Attending"}
+          $isAttending={false}
+          $active={rsvpStatus === "Not Attending"}
           onClick={() => setRsvpStatus("Not Attending")}
         >
           NOT ATTENDING
         </Button>
       </ButtonGroup>
 
-      <SubmitButton onClick={handleRSVP}>Submit RSVP</SubmitButton>
+      <SubmitButton onClick={handleRSVP} $active={rsvpStatus !== ""}>
+        Submit RSVP
+      </SubmitButton>
     </Container>
   );
 };
@@ -165,12 +167,12 @@ const Button = styled.button`
   transition: 0.3s;
 
   /* ✅ Default State: Light Gray */
-  background-color: ${(props) => (props.active ? (props.isAttending ? "#46d2c7" : "#464ff1") : "#ddd")};
-  color: ${(props) => (props.active ? "white" : "black")};
+  background-color: ${(props) => (props.$active ? (props.$isAttending ? "#46d2c7" : "#464ff1") : "#ddd")};
+  color: ${(props) => (props.$active ? "white" : "black")};
 
   &:hover {
     /* ✅ Darker Shade on Hover */
-    background-color: ${(props) => (props.isAttending ? "#3cb5af" : "#3a44d1")};
+    background-color: ${(props) => (props.$isAttending ? "#3cb5af" : "#3a44d1")};
     color: white;
   }
 
@@ -183,19 +185,19 @@ const Button = styled.button`
 
 const SubmitButton = styled.button`
   width: 200px;
-  background-color: ${(props) => (props.active ? "#d64df3" : "#ddd")}; /* ✅ Purple when active */
-  color: ${(props) => (props.active ? "white" : "black")};
+  background-color: ${(props) => (props.$active ? "#d64df3" : "#ddd")}; /* ✅ Purple when active */
+  color: ${(props) => (props.$active ? "white" : "black")};
   border: none;
   padding: 14px 28px;
   font-size: 18px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: ${(props) => (props.$active ? "pointer" : "not-allowed")};
   margin-top: 20px;
   border-radius: 5px;
   transition: 0.3s;
 
   &:hover {
-    background-color: ${(props) => (props.active ? "#b93ecb" : "#bbb")}; /* ✅ Darker Purple on Hover */
+    background-color: ${(props) => (props.$active ? "#b93ecb" : "#bbb")}; /* ✅ Darker Purple on Hover */
     color: white;
   }
 
