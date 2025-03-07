@@ -75,7 +75,11 @@ const Dashboard = () => {
                   <td>{guest.family_side}</td>
                   <td>${guest.hongbao}</td>
                   <td>{guest.total_guests}</td>
-                  <td>{guest.rsvp_status ? "Attending" : "Not Attending"}</td>
+                  <td>
+                    {guest.rsvp_status === "" || guest.rsvp_status === null
+                      ? "Pending"
+                      : guest.rsvp_status}
+                  </td>
                   <td>{guest.rsvp_token}</td>
                 </tr>
               ))}
