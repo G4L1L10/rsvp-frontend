@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getGuestByToken, submitRSVP } from "../api/rsvp";
 import styled from "styled-components";
-import weddingInvite from "../assets/Wedding_invite.jpg"; // ✅ Import wedding invite image
+import weddingInvite from "../assets/Wedding_invite.jpg";
 
 const RSVP = () => {
   const { token } = useParams();

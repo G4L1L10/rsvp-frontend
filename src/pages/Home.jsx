@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Countdown from "react-countdown";
 import styled from "styled-components";
-import invitationBackground from "../assets/invitation_background.jpg"; // ✅ Correct image path
+import invitationBackground from "../assets/invitation_background.jpg";
+
+// 🎉 Set the target time (July 27th, 6:30 PM)
+const eventDate = new Date("2025-07-27T18:30:00");
 
 const Home = () => {
   const [token, setToken] = useState("");
@@ -24,10 +28,18 @@ const Home = () => {
           <Title>
             Axel <span>'n'</span> Daphne
           </Title>
-          <Subtitle>Welcome to the wedding website</Subtitle>
+
+          {/* 🎉 Crypto-Themed Subtitle */}
+          <Subtitle>🚀 Genesis Block Minting in Progress...</Subtitle>
+
+          {/* ⏳ Countdown Timer */}
+          <CountdownText>Confirmation in:</CountdownText>
+          <CountdownNumber>
+            <Countdown date={eventDate} />
+          </CountdownNumber>
 
           <PromptText>
-            Please enter your RSVP token to view your invitation.
+            Enter your invitation token below to verify eligibility:
           </PromptText>
 
           <Form onSubmit={handleRSVPSubmit}>
@@ -37,7 +49,7 @@ const Home = () => {
               value={token}
               onChange={(e) => setToken(e.target.value)}
             />
-            <SubmitButton type="submit">View Invitation</SubmitButton>
+            <SubmitButton type="submit">Verify Invitation</SubmitButton>
           </Form>
         </Content>
       </BoxContainer>
@@ -79,6 +91,12 @@ const BoxContainer = styled.div`
     height: auto;
     background-size: cover;
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+  }
 `;
 
 const Content = styled.div`
@@ -98,13 +116,14 @@ const Title = styled.h1`
   }
 
   @media (max-width: 480px) {
-    font-size: 24px;
+    font-size: 38px;
+    margin-top: 52px;
   }
 
-  /* Style for the small 'n' */
+  /* ✅ Make the 'n' smaller */
   span {
-    font-size: 32px; /* ✅ Make 'n' smaller */
-    vertical-align: middle; /* ✅ Align properly */
+    font-size: 32px;
+    vertical-align: middle;
     font-weight: normal;
 
     @media (max-width: 768px) {
@@ -120,7 +139,8 @@ const Title = styled.h1`
 const Subtitle = styled.h2`
   font-size: 38px;
   font-family: "Winkle", sans-serif;
-  margin-bottom: 15px;
+  margin-bottom: 40px;
+  color: #464ff1; /* Periwinkle */
 
   @media (max-width: 768px) {
     font-size: 20px;
@@ -128,6 +148,38 @@ const Subtitle = styled.h2`
 
   @media (max-width: 480px) {
     font-size: 18px;
+    margin-bottom: 10px;
+  }
+`;
+
+const CountdownText = styled.p`
+  font-size: 28px;
+  font-weight: bold;
+  color: #46d2c7; /* Cyan */
+  margin-bottom: 1px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+`;
+
+const CountdownNumber = styled.p`
+  font-size: 48px;
+  font-weight: bold;
+  color: #46d2c7; /* Cyan */
+  margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+    margin-bottom: 4px;
   }
 `;
 
@@ -135,7 +187,7 @@ const PromptText = styled.p`
   font-size: 24px;
   font-weight: bold;
   color: black;
-  margin-bottom: 10px;
+  margin-top: 30px;
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -143,6 +195,7 @@ const PromptText = styled.p`
 
   @media (max-width: 480px) {
     font-size: 12px;
+    margin-top: 5px;
   }
 `;
 
@@ -154,29 +207,29 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  padding: 12px;
+  padding: 10px;
   width: 420px;
   font-size: 18px;
   border: 2px solid gray;
   border-radius: 8px;
   outline: none;
-  margin-top: 40px;
+  margin-top: 14px;
   text-align: center;
   background-color: lightgray;
 
   @media (max-width: 480px) {
-    width: 260px;
+    width: 240px;
     font-size: 14px;
-    padding: 10px;
+    padding: 8px;
   }
 `;
 
 const SubmitButton = styled.button`
-  background-color: #3498db;
+  background-color: #d64df3; /* Purple */
   color: white;
   border: none;
   padding: 12px 18px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   border-radius: 8px;
   width: 300px;
@@ -184,11 +237,11 @@ const SubmitButton = styled.button`
   font-weight: bold;
 
   &:hover {
-    background-color: #2980b9;
+    background-color: #b63adb;
   }
 
   @media (max-width: 480px) {
-    width: 260px;
+    width: 240px;
     font-size: 14px;
     padding: 10px;
   }
