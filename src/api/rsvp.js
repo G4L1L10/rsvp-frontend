@@ -4,9 +4,11 @@ import { refreshToken } from "./auth"; // Import refresh function
 const RSVP_API_URL = "http://localhost:8081"; // Ensure no trailing slash
 
 // ✅ Fetch all guests
-export const getGuests = async (retryAttempt = 0) => {
+export const getGuests = async () => {
   try {
     const token = localStorage.getItem("token");
+
+    console.log("🔑 Token being sent:", token); // Debugging
 
     if (!token) {
       throw new Error("No authentication token found. Please login.");
@@ -16,27 +18,10 @@ export const getGuests = async (retryAttempt = 0) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
+    console.log("✅ Guests fetched:", response.data);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      console.error("❌ Error fetching guests:", error.response.data);
-
-      // Handle token expiration
-      if (error.response.status === 401 && retryAttempt < 1) {
-        console.warn("🔄 Token expired. Attempting refresh...");
-
-        try {
-          await refreshToken(); // Refresh token if expired
-          return getGuests(retryAttempt + 1); // Retry fetching guests (once)
-        } catch (refreshError) {
-          console.error("❌ Token refresh failed:", refreshError);
-          throw new Error("Session expired. Please log in again.");
-        }
-      }
-    } else {
-      console.error("❌ Network or server error:", error.message);
-    }
-
+    console.error("❌ Error fetching guests:", error.response || error);
     throw error;
   }
 };
