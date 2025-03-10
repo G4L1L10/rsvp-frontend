@@ -1,7 +1,7 @@
 import axios from "axios";
 import { refreshToken } from "./auth"; // Import refresh function
 
-const RSVP_API_URL = "http://localhost:8081"; // Ensure no trailing slash
+const RSVP_API_URL = "https://rsvp-backend-331451434225.us-central1.run.app"; // ✅ Updated to Cloud Run
 
 // ✅ Fetch all guests
 export const getGuests = async () => {
